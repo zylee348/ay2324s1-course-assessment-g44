@@ -16,22 +16,23 @@
   PG_PASSWORD=<database_password>
   PG_HOST=<IP address of postgres container> (to be added after the postgres container is run)
   ```
-  in an `.env` file inside `user_backend`.\
-7. Run the following docker command to build the docker container:\ `docker build . -t user-service`\
-8. Start the docker container for `user_backend` using `docker run -d -p 4200:4200 user_service`\
-9.  Run the SQL query in PGadmin:
-  - You can run an example sql query like 
+  in an `.env` file inside `user_backend`.
+#### PGadmin setup
+1. Go to `localhost:5050` for the PGadmin interface. Setup a database by doing these steps:
+   1. Log in using your credentials
+   2. Right click on `Servers`, and register a new server.
+   3. Give it any name, and the host name/ address is the IP address obtained above.
+   4. The username is the PG_DATABASE, and the password is the PG_PASSWORD.
+   5. Then, run the SQL query like so in the database:
+```
+DROP TABLE IF EXISTS Users;
+CREATE TABLE Users(email_address VARCHAR(255) PRIMARY KEY, username VARCHAR(50) NOT NULL, password VARCHAR(50) NOT NULL, id VARCHAR(255) UNIQUE NOT NULL, role VARCHAR(50) NOT NULL);
+INSERT INTO Users(email_address, username, password, id, role) VALUES ('admin123@gmail.com', 'admin', 'adminpassword', '1', 'admin');
   ```
-  DROP TABLE IF EXISTS Users;
 
-  CREATE TABLE Users(email_address VARCHAR(255) PRIMARY KEY, username VARCHAR(50) NOT NULL, password VARCHAR(50) NOT NULL, id VARCHAR(255) UNIQUE NOT NULL, role VARCHAR(50) NOT NULL);
-
-  INSERT INTO Users(email_address, username, password, id, role) VALUES ('admin123@gmail.com', 'admin', 'adminpassword', '1', 'admin');
-
-  ```
-  in your database.
-
-10. Check that there are 3 containers running for the user service for postgres, PGadmin and user-service.
+2. Run the following docker command to build the docker container: `docker build . -t user-service`
+3. Start the docker container for `user_backend` using `docker run -d -p 4200:4200 user_service`
+4.  Check that there are 3 containers running for the user service for postgres, PGadmin and user-service.
 --- 
 ### Instructions for Question Service
 1. Open a new terminal process, type `cd src/backend/question_backend` 
@@ -40,3 +41,5 @@
 ---
 ### Instructions for Frontend
 #### In a separate terminal process, type `npm start` to run the frontend. Login with the credentials provided above.
+It should load as follows after the log in:
+![Alt text](image.png)
